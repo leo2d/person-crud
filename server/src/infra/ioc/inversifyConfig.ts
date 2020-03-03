@@ -9,7 +9,6 @@ import { getPersonRepository } from '../db/repositories/personRepository';
 
 const bindings = new AsyncContainerModule(async bind => {
   await getDbConnection();
-  // await require("./controllers/movie_controller");
 
   bind<PersonService>(TYPES.services.PersonService)
     .to(PersonService)
@@ -24,11 +23,6 @@ const bindings = new AsyncContainerModule(async bind => {
 
 const setupContainer = async () => {
   const newContainer = new Container();
-
-  // newContainer
-  //   .bind<PersonService>(TYPES.PersonService)
-  //   .to(PersonService)
-  //   .inRequestScope();
 
   await newContainer.loadAsync(bindings);
 
