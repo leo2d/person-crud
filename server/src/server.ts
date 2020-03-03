@@ -1,9 +1,3 @@
-// import app from './app';
-
-// const port = 3300;
-
-// app.listen(port, () => console.log(`Server listening on port ${port}!`));
-
 import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';

@@ -16,13 +16,9 @@ export default class PersonService {
   }
 
   async create(person: Person): Promise<void> {
-    console.log(person);
-
     person.setInitialStatus();
 
-    const newPerson = await this.save(person);
-
-    console.log(newPerson);
+    await this.save(person);
   }
 
   async update(person: Person): Promise<void> {

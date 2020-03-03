@@ -102,8 +102,6 @@ export default class PersonController implements interfaces.Controller {
       if (!id || id === '')
         return res.status(400).json(new CustomResponse(false, [], ['']));
 
-      console.log(id);
-
       await this.personService.deletePerson(id);
 
       res.status(204).json(new CustomResponse(true));
