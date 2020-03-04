@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
+import { DateSingleInput } from '@datepicker-react/styled';
+
 import { Container } from './styles';
 import Api from '../../services/api';
 import Person from '../../types/person';
 
+interface state {
+  focusedInput?: boolean;
+  birthDate?: Date;
+}
+
 const Home: React.FC = () => {
   const [people, setPeople] = useState(new Array<Person>());
 
-  const [birthDate, setBirthDate] = useState(new Date());
+  const initialState: state = {
+    focusedInput: undefined,
+    birthDate: undefined,
+  };
+  const [state, setState] = useState(initialState);
 
   useEffect(() => {
     async function loadPeople() {
@@ -24,17 +34,15 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <DateSingleInput
+        onDateChange={data => setState({ ...state, birthDate: data.date })}
+        displayFormat="dd/MM/yyyy"
+        showDatepicker={state.focusedInput}
+        date={state.birthDate}
+        onFocusChange={data => setState({ ...state, focusedInput: data })}
+      />
       <Container>
         <br />
-
-        <DatePicker
-          selected={birthDate}
-          onChange={date => setBirthDate(date || new Date())}
-          placeholderText="Data de Nascimento"
-          isClearable={true}
-          dateFormat="dd/MM/yyyy"
-          className="red-border"
-        />
 
         <br />
         <h2>hello my friend</h2>
@@ -48,7 +56,7 @@ const Home: React.FC = () => {
         })}
 
         <div>
-          <h3>{`${birthDate}`}</h3>
+          <h3>{`${state.birthDate}`}</h3>
         </div>
       </Container>
     </>
