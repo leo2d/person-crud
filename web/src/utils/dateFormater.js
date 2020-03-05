@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-const formatToBRdateFromString = (date: Date | string): string => {
+const formatToBRdate = date => {
   return moment(date).format('DD/MM/YYYY');
 };
 
-export { formatToBRdateFromString };
+export { formatToBRdate };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { DateSingleInput } from '@datepicker-react/styled';
 import { ThemeProvider } from 'styled-components';
@@ -15,10 +15,12 @@ import {
 
 import { useHistory } from 'react-router-dom';
 
+import { getStatusLabel } from '../../utils/statusUtils';
+import { formatToBRdate } from '../../utils/dateFormater';
 import { PersonFormContainer, InputsContainer, Header } from './styles';
 import Api from '../../services/api';
 
-const CreateUpdate = () => {
+const CreateUpdate = props => {
   const initialState = {
     focusedInput: undefined,
     person: {
@@ -33,6 +35,32 @@ const CreateUpdate = () => {
 
   const [state, setState] = useState(initialState);
 
+  useEffect(() => {
+    async function loadPerson() {
+      const personId = props.location?.state?.item?.id;
+
+      if (personId) {
+        const response = await Api.get(`/person/${personId}`);
+        const { data } = response?.data;
+
+        if (data) {
+          const serverPerson = data[0];
+          const newPerson = {
+            ...serverPerson,
+            status: getStatusLabel(serverPerson.status),
+            birthDate: serverPerson?.birthDate
+              ? new Date(serverPerson?.birthDate)
+              : null,
+          };
+
+          setState({ ...state, person: newPerson });
+        }
+      }
+    }
+
+    loadPerson();
+  }, []);
+
   const history = useHistory();
 
   const handleSubmit = async e => {
@@ -42,7 +70,11 @@ const CreateUpdate = () => {
 
     const person = { ...state.person, phoneNumber: phoneStr };
 
-    await Api.post('/person', person);
+    if (state.person.id) {
+      await Api.put('/person', person);
+    } else {
+      await Api.post('/person', person);
+    }
 
     history.push('/home');
   };

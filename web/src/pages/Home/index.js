@@ -14,7 +14,8 @@ import { saveAs } from 'file-saver';
 
 import { Button, ButtonContainer, Container, Header } from './styles';
 import Api from '../../services/api';
-import { formatToBRdateFromString } from '../../utils/dateFormater';
+import { formatToBRdate } from '../../utils/dateFormater';
+import { getStatusLabel } from '../../utils/statusUtils';
 import Cell from '../../components/Cell';
 
 const Home = () => {
@@ -39,7 +40,7 @@ const Home = () => {
           const newPerson = {
             ...p,
             // birthDate: p?.birthDate
-            //   ? formatToBRdateFromString(p?.birthDate)
+            //   ? formatToBRdate(p?.birthDate)
             //   : p?.birthDate,
             status: getStatusLabel(p.status),
           };
@@ -67,15 +68,6 @@ const Home = () => {
         'DataGrid.xlsx'
       );
     });
-  };
-
-  const getStatusLabel = code => {
-    const options = {
-      1: 'Ativo',
-      2: 'Inativo',
-    };
-
-    return options[code] || 'Excluido';
   };
 
   return (
