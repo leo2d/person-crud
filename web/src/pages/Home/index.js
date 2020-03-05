@@ -12,11 +12,12 @@ import { SortingState, IntegratedSorting } from '@devexpress/dx-react-grid';
 import { GridExporter } from '@devexpress/dx-react-grid-export';
 import { saveAs } from 'file-saver';
 
-import { Button, ButtonContainer, Container, Header } from './styles';
+import { ButtonContainer, Container, Header } from './styles';
 import Api from '../../services/api';
 import { formatToBRdate } from '../../utils/dateFormater';
 import { getStatusLabel } from '../../utils/statusUtils';
 import Cell from '../../components/Cell';
+import { formatPhoneNumber } from '../../utils/phoneFormater';
 
 const Home = () => {
   const [people, setPeople] = useState([]);
@@ -39,9 +40,8 @@ const Home = () => {
         const formatedData = data.map(p => {
           const newPerson = {
             ...p,
-            // birthDate: p?.birthDate
-            //   ? formatToBRdate(p?.birthDate)
-            //   : p?.birthDate,
+            // birthDate: formatToBRdate(p.birthDate),
+            phoneNumber: formatPhoneNumber(p.phoneNumber),
             status: getStatusLabel(p.status),
           };
 
@@ -75,9 +75,8 @@ const Home = () => {
       <Container>
         <Header>
           <ButtonContainer>
-            <Button className="btn btn-dark">Exportar</Button>
             <Link className="btn btn-dark" to="/new">
-              Adiionar +
+              Adicionar +
             </Link>
           </ButtonContainer>
         </Header>

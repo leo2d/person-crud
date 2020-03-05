@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { DateSingleInput } from '@datepicker-react/styled';
 import { ThemeProvider } from 'styled-components';
 import InputMask from 'react-input-mask';
@@ -11,29 +10,44 @@ import {
   Row,
   Col,
   FormGroup,
+  FormLabel,
 } from 'react-bootstrap';
 
 import { useHistory } from 'react-router-dom';
 
 import { getStatusLabel } from '../../utils/statusUtils';
 import { formatToBRdate } from '../../utils/dateFormater';
-import { PersonFormContainer, InputsContainer, Header } from './styles';
+import {
+  PersonFormContainer,
+  InputsContainer,
+  Header,
+  Title,
+  AcionButtonsContainer,
+  StatusDropDown,
+  StatusOption,
+} from './styles';
 import Api from '../../services/api';
 
 const CreateUpdate = props => {
-  const initialState = {
-    focusedInput: undefined,
+  const initialPersonState = {
     person: {
-      id: undefined,
+      id: null,
       name: '',
       address: '',
-      phoneNumber: undefined,
-      birthDate: undefined,
-      status: undefined,
+      phoneNumber: null,
+      birthDate: null,
+      status: null,
     },
   };
 
-  const [state, setState] = useState(initialState);
+  const InitialFormState = {
+    focusedInput: null,
+    isEditing: false,
+    isValid: false,
+  };
+
+  const [person, setPerson] = useState(initialPersonState);
+  const [formState, setFormState] = useState(InitialFormState);
 
   useEffect(() => {
     async function loadPerson() {
@@ -45,15 +59,16 @@ const CreateUpdate = props => {
 
         if (data) {
           const serverPerson = data[0];
-          const newPerson = {
+          const person = {
             ...serverPerson,
-            status: getStatusLabel(serverPerson.status),
+            // status: getStatusLabel(serverPerson.status),
             birthDate: serverPerson?.birthDate
               ? new Date(serverPerson?.birthDate)
               : null,
           };
 
-          setState({ ...state, person: newPerson });
+          setPerson(person);
+          setFormState({ focusedInput: undefined, isEditing: true });
         }
       }
     }
@@ -63,17 +78,21 @@ const CreateUpdate = props => {
 
   const history = useHistory();
 
+  const handleCancel = _ => {
+    history.goBack();
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const phoneStr = state.person.phoneNumber.replace(/\D/g, '');
+    const phoneStr = person.phoneNumber.replace(/\D/g, '');
 
-    const person = { ...state.person, phoneNumber: phoneStr };
+    const newPerson = { ...person, phoneNumber: phoneStr };
 
-    if (state.person.id) {
-      await Api.put('/person', person);
+    if (formState.isEditing) {
+      await Api.put('/person', newPerson);
     } else {
-      await Api.post('/person', person);
+      await Api.post('/person', newPerson);
     }
 
     history.push('/home');
@@ -82,12 +101,9 @@ const CreateUpdate = props => {
   const managePhone = e => {
     if (e.type && e.type === 'change') {
       if (e.target.value !== '') {
-        setState({
-          ...state,
-          person: {
-            ...state.person,
-            phoneNumber: e.target.value,
-          },
+        setPerson({
+          ...person,
+          phoneNumber: e.target.value,
         });
       }
     }
@@ -96,94 +112,150 @@ const CreateUpdate = props => {
   return (
     <>
       <Header>
-        <Link to="/">Home</Link>
+        <Title className="h3 text-white">
+          {formState.isEditing ? 'Edição' : 'Cadastro'}
+        </Title>
       </Header>
+
       <Container>
         <PersonFormContainer>
           <Form>
-            <FormGroup>
+            <FormGroup hidden={!formState.isEditing}>
+              <FormLabel>Código</FormLabel>
               <FormControl
                 placeholder="Código:"
                 readOnly={true}
                 disabled
-                value={state?.person?.id}
+                value={person.id || ''}
               />
             </FormGroup>
             <InputsContainer>
               <FormGroup>
+                <FormLabel>Nome</FormLabel>
                 <FormControl
                   required
+                  type="text"
                   placeholder="Nome"
                   onChange={e =>
-                    setState({
-                      ...state,
-                      person: { ...state.person, name: e.target.value },
+                    setPerson({
+                      ...person,
+                      name: e.target.value,
                     })
                   }
-                  value={state?.person?.name}
+                  value={person.name || ''}
                 />
               </FormGroup>
               <FormGroup>
+                <FormLabel>Endereço</FormLabel>
                 <FormControl
                   required
                   placeholder="Endereço"
                   onChange={e =>
-                    setState({
-                      ...state,
-                      person: { ...state.person, address: e.target.value },
+                    setPerson({
+                      ...person,
+                      address: e.target.value,
                     })
                   }
-                  value={state?.person?.address}
+                  value={person.address || ''}
                 />
               </FormGroup>
 
               <Row>
-                <Col md={6}>
-                  <InputMask
-                    className="form-control"
-                    required
-                    minLength={12}
-                    alwaysShowMask={false}
-                    placeholder="Telefone"
-                    mask="99 9 9999-9999"
-                    onChange={e => managePhone(e)}
-                    value={state.person?.phoneNumber || ''}
-                  />
-                </Col>
-                <Col md={6}>
-                  <ThemeProvider
-                    theme={{
-                      reactDatepicker: {
-                        inputMinHeight: 'calc(1.5em + .75rem + 2px)',
-                        datepickerBorderRadius: '0.25em',
-                        inputLabelBorderRadius: '0.25em',
-                      },
-                    }}
-                  >
-                    <DateSingleInput
-                      onDateChange={data =>
-                        setState({
-                          ...state,
-                          person: { ...state.person, birthDate: data.date },
-                        })
-                      }
-                      displayFormat="dd/MM/yyyy"
-                      showDatepicker={state.focusedInput}
-                      date={state.person?.birthDate}
-                      onFocusChange={data =>
-                        setState({ ...state, focusedInput: data })
-                      }
+                <Col md={4}>
+                  <FormGroup>
+                    <FormLabel>Telefone</FormLabel>
+                    <InputMask
+                      className="form-control has-error"
+                      required
+                      minLength={12}
+                      alwaysShowMask={false}
+                      placeholder="Telefone"
+                      mask="(99) 99999-9999"
+                      onChange={e => managePhone(e)}
+                      value={person?.phoneNumber || ''}
                     />
-                  </ThemeProvider>
+                  </FormGroup>
+                </Col>
+                <Col md={4}>
+                  <FormGroup>
+                    <FormLabel>Data de Nascimento</FormLabel>
+                    <ThemeProvider
+                      theme={{
+                        reactDatepicker: {
+                          inputMinHeight: 'calc(1.5em + .75rem + 2px)',
+                          datepickerBorderRadius: '0.25em',
+                          inputLabelBorderRadius: '0.25em',
+                        },
+                      }}
+                    >
+                      <DateSingleInput
+                        onDateChange={data => {
+                          setPerson({
+                            ...person,
+                            birthDate: data.date,
+                          });
+                        }}
+                        displayFormat="dd/MM/yyyy"
+                        showDatepicker={formState.focusedInput}
+                        date={person?.birthDate}
+                        onFocusChange={data =>
+                          setFormState({ ...formState, focusedInput: data })
+                        }
+                      />
+                    </ThemeProvider>
+                  </FormGroup>
+                </Col>
+                <Col md={4}>
+                  <FormGroup>
+                    {formState.isEditing && (
+                      <>
+                        <FormLabel>Status</FormLabel>
+                        <StatusDropDown
+                          className="form-control"
+                          onChange={e =>
+                            setPerson({ ...person, status: e.target.value })
+                          }
+                          value={person.status}
+                        >
+                          <StatusOption value={1}>Ativo</StatusOption>
+                          <StatusOption value={2}>Inativo</StatusOption>
+                          {person.status === 3 && (
+                            <StatusOption value={3}>Excluido</StatusOption>
+                          )}
+                        </StatusDropDown>
+                      </>
+                    )}
+                  </FormGroup>
                 </Col>
               </Row>
             </InputsContainer>
             <FormGroup></FormGroup>
-            <FormGroup>
-              <Button variant="success" onClick={handleSubmit}>
-                Salvar
-              </Button>
-            </FormGroup>
+            <Row>
+              <Col md={4}>
+                <FormGroup>
+                  <AcionButtonsContainer>
+                    <Button
+                      disabled={formState.isValid}
+                      variant="success"
+                      onClick={handleSubmit}
+                    >
+                      Salvar
+                    </Button>
+                    <Button
+                      variant="danger"
+                      className="mr-2"
+                      onClick={handleCancel}
+                      size="md"
+                    >
+                      Cancelar
+                    </Button>
+                  </AcionButtonsContainer>
+                </FormGroup>
+              </Col>
+              <Col md={8}>
+                <FormGroup></FormGroup>
+              </Col>
+            </Row>
           </Form>
         </PersonFormContainer>
       </Container>
