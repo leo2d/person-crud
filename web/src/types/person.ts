@@ -2,7 +2,7 @@ export default interface Person {
   id: string;
   name: string;
   address: string;
-  phoneNumber: number;
+  phoneNumber: string;
   status: number;
   birthDate?: Date;
 }
