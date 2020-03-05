@@ -179,6 +179,7 @@ const CreateUpdate = props => {
                 <Col md={4}>
                   <FormGroup>
                     <FormLabel>Data de Nascimento</FormLabel>
+
                     <ThemeProvider
                       theme={{
                         reactDatepicker: {
@@ -189,6 +190,7 @@ const CreateUpdate = props => {
                       }}
                     >
                       <DateSingleInput
+                        showResetDate={false}
                         onDateChange={data => {
                           setPerson({
                             ...person,
@@ -235,7 +237,7 @@ const CreateUpdate = props => {
                 <FormGroup>
                   <AcionButtonsContainer>
                     <Button
-                      disabled={formState.isValid}
+                      disabled={!formState.isValid}
                       variant="success"
                       onClick={handleSubmit}
                     >
