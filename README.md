@@ -1,5 +1,5 @@
 # person-crud
-### Crud with NodeJs with Typescript and React
+### Crud with NodeJs, Typescript and React
 
 
 
