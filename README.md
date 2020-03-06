@@ -11,8 +11,8 @@
 2. Then run __yarn__ or __npm i__
 3. Setup your connection to a PostgreSQL server  
     1. Open the file **dbConfig.ts** in _src/infra/db/config/dbConfig.ts_
-    2. Change the value of `connectionString` with your connection string  
-        For example: 
+    2. Change the value of the follow constants with your connection string:  
+         
         ```javascript
 
         //dbConfig.ts
