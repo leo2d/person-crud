@@ -13,8 +13,8 @@ This project was developed  with __React Js 16.13.0__ and Hooks.
 2. Then run __yarn__ or __npm i__
 3. Setup the connection to the api
     1. Open the file **api.js** in _src/services/api.js_
-    2. Change the value of the follow constants with your connection string:  
-         
+    2. Change the value of **baseURL** with your server url info:  
+         For Example:
         ```javascript
 
         //api.js
