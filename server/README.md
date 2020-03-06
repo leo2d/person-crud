@@ -24,7 +24,7 @@ This project use some popular libraries:
     1. You will need to create the database manualy, so connect to your postgreSQL Server and then run the command for create the database.
         For example: 
         ```sql   
-        CREATE DATABASE "crud-person"; //or whatever name you want
+        CREATE DATABASE "crud-person"; --or whatever name you want
         ```
     2. Open the file **dbConfig.ts** in _src/infra/db/config/dbConfig.ts_
     3. Change the value of the follow constants with your connection string:  
