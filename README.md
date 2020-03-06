@@ -2,10 +2,7 @@
 ### Crud with NodeJs, Typescript and React
 
 
-
-### How to run:
-
-***Follow these steps:***
+***To run this project follow these steps :***
 
 - [Backend Web Api]( https://github.com/leo2d/person-crud/blob/master/server/README.md "Backend") 
 
