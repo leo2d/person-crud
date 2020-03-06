@@ -94,7 +94,7 @@ const Home = () => {
         <GridExporter
           ref={exporterRef}
           rows={people}
-          columns={columns.filter(c => c.title !== 'actions')}
+          columns={columns.filter(c => c.name !== 'actions')}
           onSave={onSave}
         />
       </Container>
