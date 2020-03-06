@@ -21,8 +21,13 @@ This project use some popular libraries:
 1. Clone this repository and navigate to the server folder
 2. Then run __yarn__ or __npm i__
 3. Setup your connection to a PostgreSQL server  
-    1. Open the file **dbConfig.ts** in _src/infra/db/config/dbConfig.ts_
-    2. Change the value of the follow constants with your connection string:  
+    1. You will need to create the database manualy, so connect to your postgreSQL Server and then run the command for create the database.
+        For example: 
+        ```sql   
+        CREATE DATABASE "crud-person"; --or whatever name you want
+        ```
+    2. Open the file **dbConfig.ts** in _src/infra/db/config/dbConfig.ts_
+    3. Change the value of the follow constants with your connection string:  
          
         ```javascript
 
@@ -32,7 +37,7 @@ This project use some popular libraries:
           const DATABASE_USER = 'postgres';
           const DATABASE_PORT = 5432;
           const DATABASE_PASSWORD = 'postgres';
-          const DATABASE_DB = 'crud-person';
+          const DATABASE_DB = 'crud-person'; //the name of the database you created at the first step
         
         ```
 4. Finally you can run __yarn debug__ or __npm run debug__ to run in debug mode or just __yarn start__ or __npm start__ to start the application
