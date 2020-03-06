@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "start": "node src/server.ts",
+    "start": "ts-node src/server.ts",
     "debug": "nodemon --inspect src/server.ts",
     "lint": "tsc --noEmit && eslint 'src/**/*.{js,ts}' 'tests/**/*.{js,ts}' --quiet --fix",
     "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f .src/infra/db/config/dbConfig.ts"
   },
-  "name": "creud-person",
+  "name": "crud-person",
   "version": "1.0.0",
   "main": "src/app.ts",
   "license": "MIT",
