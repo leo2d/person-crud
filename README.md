@@ -24,7 +24,7 @@
           const DATABASE_DB = 'crud-person';
         
         ```
-4. Finally you can run __yarn debug__ or __npm dev:debug__ to run in debug mode or just __yarn start__ or __npm start__ to start the application
+4. Finally you can run __yarn debug__ or __npm run debug__ to run in debug mode or just __yarn start__ or __npm start__ to start the application
 5. Optional: Change the app port
     1. For default this app will runs at port `3300` but you can change editting the value of the variable `port` in the **server.ts** file in src/server.ts  
         For example: 
