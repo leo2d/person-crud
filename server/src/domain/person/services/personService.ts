@@ -1,8 +1,9 @@
 import Person from '../person';
 
 import { injectable, inject } from 'inversify';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import TYPES from '../../../constants/types/types';
+import { StatusPerson } from '../../shared/enums/statusEnum';
 
 @injectable()
 export default class PersonService {
@@ -52,6 +53,15 @@ export default class PersonService {
     if (!result || !(result?.length > 0)) return null;
 
     return result[0];
+  }
+
+  async getActiveOrInactive(): Promise<Person[]> {
+    const result = await this.personRepository.find({
+      where: {
+        status: In([StatusPerson.Active, StatusPerson.Inactive]),
+      },
+    });
+    return result;
   }
 
   async get(): Promise<Person[]> {

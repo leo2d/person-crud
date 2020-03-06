@@ -40,6 +40,17 @@ export default class PersonController implements interfaces.Controller {
     }
   }
 
+  @httpGet('/existing')
+  async getExisting(@response() res: Response): Promise<any> {
+    try {
+      const result = await this.personService.getActiveOrInactive();
+
+      res.status(200).json(new CustomResponse(true, result));
+    } catch (error) {
+      res.status(500).json(new CustomResponse(false, [], [error.message]));
+    }
+  }
+
   @httpGet('/:id')
   async getbyId(
     @response() res: Response,
@@ -96,7 +107,7 @@ export default class PersonController implements interfaces.Controller {
   @httpDelete('/:id')
   async delete(
     @response() res: Response,
-    @requestParam() id: string
+    @requestParam() id?: string
   ): Promise<any> {
     try {
       if (!id || id === '')
