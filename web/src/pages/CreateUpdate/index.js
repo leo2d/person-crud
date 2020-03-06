@@ -194,6 +194,8 @@ const CreateUpdate = props => {
                           });
                         }}
                         displayFormat="dd/MM/yyyy"
+                        phrases={{ dateAriaLabel: 'Data Nasimento', datePlaceholder: 'Selecione a data' }}
+                        maxBookingDate={new Date()}
                         showDatepicker={formState.focusedInput}
                         date={person?.birthDate}
                         onFocusChange={data =>
