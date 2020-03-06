@@ -33,7 +33,7 @@ const Home = () => {
 
   useEffect(() => {
     async function loadPeople() {
-      const response = await Api.get(`/person`);
+      const response = await Api.get(`/person/existing`);
       const { data } = response?.data;
 
       if (data) {
