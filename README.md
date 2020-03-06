@@ -9,4 +9,4 @@
 
 - [Backend Web Api]( https://github.com/leo2d/person-crud/blob/master/server/README.md "Backend") 
 
-- [Fonrtend Web]( https://github.com/leo2d/person-crud/blob/master/web/README.md "FrontEnd") 
+- [FrontEnd Web]( https://github.com/leo2d/person-crud/blob/master/web/README.md "FrontEnd") 
