@@ -26,4 +26,4 @@ This project was developed  with __React Js 16.13.0__ and Hooks.
         
         ```
 4. So you can run __yarn start__ or __npm start__ to start the application
-5. Important: __Note that you will need internet connection, because these projects uses some CDN resources__
+5. Important: __Note that you will need internet connection, because this project uses some CDN resources__
