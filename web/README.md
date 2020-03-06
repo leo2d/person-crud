@@ -1,5 +1,4 @@
 # person-crud
-### Crud with NodeJs with Typescript and React
 
 ### Into the stack:
 
