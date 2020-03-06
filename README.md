@@ -9,7 +9,7 @@
 
 1. Clone this repository and navigate to the server folder
 2. Then run __yarn__ or __npm i__
-3. Setup your connection to a Postgres SQL server  
+3. Setup your connection to a PostgreSQL server  
     1. Open the file **dbConfig.ts** in _src/infra/db/config/dbConfig.ts_
     2. Change the value of `connectionString` with your connection string  
         For example: 
