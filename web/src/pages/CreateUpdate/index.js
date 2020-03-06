@@ -15,8 +15,6 @@ import {
 
 import { useHistory } from 'react-router-dom';
 
-import { getStatusLabel } from '../../utils/statusUtils';
-import { formatToBRdate } from '../../utils/dateFormater';
 import {
   PersonFormContainer,
   InputsContainer,
@@ -43,7 +41,6 @@ const CreateUpdate = props => {
   const InitialFormState = {
     focusedInput: null,
     isEditing: false,
-    isValid: false,
   };
 
   const [person, setPerson] = useState(initialPersonState);
@@ -61,7 +58,6 @@ const CreateUpdate = props => {
           const serverPerson = data[0];
           const person = {
             ...serverPerson,
-            // status: getStatusLabel(serverPerson.status),
             birthDate: serverPerson?.birthDate
               ? new Date(serverPerson?.birthDate)
               : null,
@@ -236,11 +232,7 @@ const CreateUpdate = props => {
               <Col md={4}>
                 <FormGroup>
                   <AcionButtonsContainer>
-                    <Button
-                      disabled={!formState.isValid}
-                      variant="success"
-                      onClick={handleSubmit}
-                    >
+                    <Button variant="success" onClick={handleSubmit}>
                       Salvar
                     </Button>
                     <Button
